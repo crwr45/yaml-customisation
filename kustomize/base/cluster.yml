@@ -1,0 +1,22 @@
+---
+apiVersion: hive.openshift.io/v1
+kind: ClusterDeployment
+metadata:
+  name: cluster
+spec:
+  baseDomain: lab.example.com
+  clusterName: name
+  controlPlaneConfig:
+    servingCertificates: {}
+  clusterInstallRef:
+    group: extensions.hive.openshift.io
+    kind: AgentClusterInstall
+    name: aci-name
+    version: v1beta1
+  platform:
+    agentBareMetal:
+      agentSelector:
+        matchLabels:
+          telco-core: core-name
+  pullSecretRef:
+    name: pull-secret

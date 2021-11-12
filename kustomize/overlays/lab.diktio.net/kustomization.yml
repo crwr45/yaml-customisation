@@ -1,0 +1,14 @@
+commonLabels:
+  variant: ocptest.lab.diktio.net
+
+nameSuffix: -ocptest
+
+bases:
+  - ../../base
+
+patches:
+  - cluster.yml
+  - infraenv.yml
+  - aci.yml
+  - nodes/master/bmh-node-master0.yml
+  - nodes/master/bmh-node-master1.yml

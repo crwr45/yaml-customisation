@@ -1,0 +1,17 @@
+---
+apiVersion: agent-install.openshift.io/v1beta1
+kind: InfraEnv
+metadata:
+  name: infraenv
+spec:
+  additionalNTPSources:
+    - time.redhat.com
+  clusterRef:
+    name: cluster-name
+    namespace: cluster-namespace
+  sshAuthorizedKey: 
+  pullSecretRef:
+    name: pull-secret
+  nmStateConfigLabelSelector:
+    matchLabels:
+      cluster-name: name-nmstate
