@@ -1,0 +1,9 @@
+---
+namespace: default
+value: Hello World
+hook_script: scripts/test.sh
+
+lv_spec:
+  device: vdb
+  count: 5
+  size: 25

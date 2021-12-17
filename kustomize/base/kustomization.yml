@@ -1,7 +1,0 @@
-namespace: assisted-installer
-
-resources:
-  - cluster.yml
-  - infraenv.yml
-  - aci.yml
-  - nodes/master/bmh-node.yml

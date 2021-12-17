@@ -1,0 +1,29 @@
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  annotations:
+    helm.sh/hook: post-install
+    helm.sh/hook-delete-policy: hook-succeeded
+    helm.sh/hook-weight: "-5"
+  nameGenerator: post-install-
+  namespace: {{ .Values.namespace}}
+spec:
+  template:
+    spec:
+      dnsPolicy: ClusterFirst
+      restartPolicy: OnFailure
+      serviceAccount: cli-job-sa
+      serviceAccountName: cli-job-sa
+      terminationGracePeriodSeconds: 30
+      containers:
+        - image: registry.redhat.io/openshift-gitops-1/argocd-rhel8:v1.2.0
+          imagePullPolicy: Always
+          name: mcp-wait-job
+          env:
+            VALUE: {{ .Values.value }}
+          command:
+            - /bin/bash
+            - -c
+            - |
+{{ .Files.Get .Values.hook_script | indent 14 }}

@@ -1,0 +1,33 @@
+apiVersion: machineconfiguration.openshift.io/v1
+kind: MachineConfig
+metadata:
+  name: create-lvs
+  labels:
+    machineconfiguration.openshift.io/role: master
+spec:
+  config:
+    ignition:
+      version: 3.2.0
+    storage:
+      files:
+        - contents:
+            source: "data:text/plain;charset=utf-8;base64,{{ .Files.Get "scripts/create_lvs.sh" | b64enc }}"
+          mode: 493
+          overwrite: true
+          path: /usr/local/bin/create-lvs.sh
+    systemd:
+      units:
+        - contents: |
+            [Unit]
+            Description=Create LVS partitions
+            Wants=network-online.target
+            After=network-online.target ignition-firstboot-complete.service
+            [Service]
+            Type=oneshot
+            RemainAfterExit=yes
+            EnvironmentFile=
+            ExecStart=/bin/bash -c "/usr/local/bin/create-lvs.sh {{ .Values.lv_spec.device }} {{ .Values.lv_spec.count }} {{ .Values.lv_spec.size }}"
+            [Install]
+            WantedBy=multi-user.target
+          enabled: true
+          name: create-lvs.service
